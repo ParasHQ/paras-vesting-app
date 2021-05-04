@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Epilogue", sans-serif;
+  background-image: linear-gradient(
+    to bottom,
+    #000000 0%,
+    rgba(0, 0, 0, 0.69) 69%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  background-color: #1f1d23;
+  min-height: 100vh;
+}
+
+button {
+  outline: 0 !important;
+}
