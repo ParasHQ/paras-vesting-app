@@ -19,16 +19,13 @@ import {
   contractGetStorageBalance,
   contractStorageDeposit,
   logout,
+  contractVestingTime,
 } from "./near/near"
-import {
-  fetchBalance,
-  fetchReward,
-  fetchVestingTime,
-  setUser,
-} from "./app/userSlice"
+import { fetchBalance, fetchReward, setUser } from "./app/userSlice"
 
 const App = () => {
   const [deposited, setDeposited] = useState(true)
+  const [vestingTime, setVestingTime] = useState({})
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -36,7 +33,7 @@ const App = () => {
       dispatch(setUser(getAccountId()))
       dispatch(fetchBalance())
       dispatch(fetchReward())
-      dispatch(fetchVestingTime())
+      setVestingTime(await contractVestingTime())
       setDeposited((await contractGetStorageBalance()) !== null)
     }
 
@@ -63,7 +60,7 @@ const App = () => {
               <Balance />
             </Route>
             <Route exact path="/reward">
-              <Reward />
+              <Reward vestingTime={vestingTime} />
             </Route>
             <Route exact path="/">
               <Redirect to="/balance" />

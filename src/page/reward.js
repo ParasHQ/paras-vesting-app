@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchReward } from "../app/userSlice"
 import { contractClaimVested } from "../near/near"
 
-const Reward = () => {
-  const { userReward, vestingTime } = useSelector((state) => state.user)
+const Reward = ({ vestingTime }) => {
+  const { userReward } = useSelector((state) => state.user)
   const [isClaiming, setIsClaiming] = useState(false)
   const dispatch = useDispatch()
 

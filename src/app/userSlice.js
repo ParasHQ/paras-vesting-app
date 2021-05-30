@@ -1,9 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import {
-  contractGetReleasableAmount,
-  contractGetBalance,
-  contractVestingTime,
-} from "../near/near"
+import { contractGetReleasableAmount, contractGetBalance } from "../near/near"
 import { prettyBalance } from "../utils/common"
 
 export const userSlice = createSlice({
@@ -12,7 +8,6 @@ export const userSlice = createSlice({
     userId: null,
     userBalance: 0,
     userReward: 0,
-    vestingTime: {},
   },
   reducers: {
     setUser: (state, action) => {
@@ -23,9 +18,6 @@ export const userSlice = createSlice({
     },
     setReward: (state, action) => {
       state.userReward = action.payload
-    },
-    setVestingTime: (state, action) => {
-      state.vestingTime = action.payload
     },
   },
 })
@@ -52,13 +44,5 @@ export const fetchReward = createAsyncThunk(
   async (_, { dispatch }) => {
     const response = await contractGetReleasableAmount()
     dispatch(setReward(prettyBalance(response, 24, 4)))
-  }
-)
-
-export const fetchVestingTime = createAsyncThunk(
-  "fetchVestingTime",
-  async (_, { dispatch }) => {
-    const response = await contractVestingTime()
-    dispatch(setVestingTime(response))
   }
 )
