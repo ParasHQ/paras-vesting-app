@@ -1,8 +1,15 @@
-import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { fetchBalance } from "../app/userSlice"
 
 const Balance = () => {
   const { userBalance } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchBalance())
+  }, [dispatch])
 
   return (
     <div className="mx-6">

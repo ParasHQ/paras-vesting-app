@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchReward } from "../app/userSlice"
+import { fetchBalance, fetchReward } from "../app/userSlice"
 import { contractClaimVested } from "../near/near"
 
 const Reward = ({ vestingTime }) => {
@@ -19,6 +19,7 @@ const Reward = ({ vestingTime }) => {
     setIsClaiming(true)
     try {
       await contractClaimVested()
+      dispatch(fetchBalance())
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
@@ -51,16 +52,25 @@ const Reward = ({ vestingTime }) => {
         >
           {buttonText()}
         </button>
-        <div className="mt-16">
-          <p className="text-gray-300">
-            {`Start ${vestingTime.start?.toLocaleDateString("en-US")}`}
-          </p>
-          <p className="text-gray-300">
-            {`Cliff ${vestingTime.cliff?.toLocaleDateString("en-US")}`}
-          </p>
-          <p className="text-gray-300">
-            {`Duration ${vestingTime.duration?.toLocaleDateString("en-US")}`}
-          </p>
+        <div className="mt-16 flex justify-evenly">
+          <div>
+            <p className="text-gray-300">Cliff</p>
+            <p className="font-bold text-gray-200">
+              {vestingTime.cliff?.toLocaleDateString("en-US")}
+            </p>
+          </div>
+          <div>
+            <p className="text-gray-300">Start</p>
+            <p className="font-bold text-gray-200">
+              {vestingTime.start?.toLocaleDateString("en-US")}
+            </p>
+          </div>
+          <div>
+            <p className="text-gray-300">Duration</p>
+            <p className="font-bold text-gray-200">
+              {vestingTime.duration?.toLocaleDateString("en-US")}
+            </p>
+          </div>
         </div>
       </div>
     </div>
