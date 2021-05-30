@@ -20,7 +20,12 @@ import {
   contractStorageDeposit,
   logout,
 } from "./near/near"
-import { fetchBalance, fetchReward, setUser } from "./app/userSlice"
+import {
+  fetchBalance,
+  fetchReward,
+  fetchVestingTime,
+  setUser,
+} from "./app/userSlice"
 
 const App = () => {
   const [deposited, setDeposited] = useState(true)
@@ -31,6 +36,7 @@ const App = () => {
       dispatch(setUser(getAccountId()))
       dispatch(fetchBalance())
       dispatch(fetchReward())
+      dispatch(fetchVestingTime())
       setDeposited((await contractGetStorageBalance()) !== null)
     }
 

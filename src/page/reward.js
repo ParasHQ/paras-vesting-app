@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchReward } from "../app/userSlice"
-import { contractClaimVested, contractVestingTime } from "../near/near"
+import { contractClaimVested } from "../near/near"
 
 const Reward = () => {
-  const { userReward } = useSelector((state) => state.user)
-  const dispatch = useDispatch()
+  const { userReward, vestingTime } = useSelector((state) => state.user)
   const [isClaiming, setIsClaiming] = useState(false)
-  const [vestingTime, setVestingTime] = useState({})
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const getVestingTime = async () => {
-      setVestingTime(await contractVestingTime())
-    }
     dispatch(fetchReward())
-    getVestingTime()
   }, [dispatch])
 
   const onPressClaim = async () => {
@@ -33,7 +28,7 @@ const Reward = () => {
 
   const buttonText = () => {
     if (isClaiming) {
-      return "Processing"
+      return "Processing..."
     }
     if (userReward === "0") {
       return "Reward Claimed"
@@ -57,9 +52,15 @@ const Reward = () => {
           {buttonText()}
         </button>
         <div className="mt-16">
-          <p className="text-gray-300">{vestingTime.start?.toString()}</p>
-          <p className="text-gray-300">{vestingTime.cliff?.toString()}</p>
-          <p className="text-gray-300">{vestingTime.duration?.toString()}</p>
+          <p className="text-gray-300">
+            {`Start ${vestingTime.start?.toLocaleDateString("en-US")}`}
+          </p>
+          <p className="text-gray-300">
+            {`Cliff ${vestingTime.cliff?.toLocaleDateString("en-US")}`}
+          </p>
+          <p className="text-gray-300">
+            {`Duration ${vestingTime.duration?.toLocaleDateString("en-US")}`}
+          </p>
         </div>
       </div>
     </div>
