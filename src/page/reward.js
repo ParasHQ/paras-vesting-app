@@ -54,19 +54,19 @@ const Reward = ({ vestingTime }) => {
         </button>
         <div className="mt-16 flex justify-evenly">
           <div>
-            <p className="text-gray-300">Cliff</p>
-            <p className="font-bold text-gray-200">
-              {vestingTime.cliff?.toLocaleDateString("en-US")}
-            </p>
-          </div>
-          <div>
             <p className="text-gray-300">Start</p>
             <p className="font-bold text-gray-200">
               {vestingTime.start?.toLocaleDateString("en-US")}
             </p>
           </div>
           <div>
-            <p className="text-gray-300">Duration</p>
+            <p className="text-gray-300">Cliff</p>
+            <p className="font-bold text-gray-200">
+              {vestingTime.cliff?.toLocaleDateString("en-US")}
+            </p>
+          </div>
+          <div>
+            <p className="text-gray-300">End</p>
             <p className="font-bold text-gray-200">
               {vestingTime.duration?.toLocaleDateString("en-US")}
             </p>
