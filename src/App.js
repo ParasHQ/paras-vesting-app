@@ -13,6 +13,7 @@ import Login from "./page/login"
 import Nav from "./component/Nav"
 import Footer from "./component/Footer"
 import DepositModal from "./component/DepositModal"
+import NotRecipientModal from "./component/NotRecipientModal"
 import {
   getAccountId,
   isLoggedIn,
@@ -20,21 +21,27 @@ import {
   contractStorageDeposit,
   logout,
   contractVestingTime,
+  contractGetRecepient,
 } from "./near/near"
 import { fetchBalance, fetchReward, setUser } from "./app/userSlice"
 
 const App = () => {
   const [deposited, setDeposited] = useState(true)
   const [vestingTime, setVestingTime] = useState({})
+  const [isRecipient, setIsRecipient] = useState(true)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchUser = async () => {
-      dispatch(setUser(getAccountId()))
-      dispatch(fetchBalance())
-      dispatch(fetchReward())
-      setVestingTime(await contractVestingTime())
-      setDeposited((await contractGetStorageBalance()) !== null)
+      const isAccRecipient = (await contractGetRecepient()) === getAccountId()
+      if (isAccRecipient) {
+        dispatch(setUser(getAccountId()))
+        dispatch(fetchBalance())
+        dispatch(fetchReward())
+        setVestingTime(await contractVestingTime())
+        setDeposited((await contractGetStorageBalance()) !== null)
+      }
+      setIsRecipient(isAccRecipient)
     }
 
     if (isLoggedIn()) {
@@ -43,6 +50,10 @@ const App = () => {
       dispatch(setUser(null))
     }
   }, [dispatch])
+
+  if (isLoggedIn() && !isRecipient) {
+    return <NotRecipientModal onClickLogout={logout} />
+  }
 
   return (
     <Router>

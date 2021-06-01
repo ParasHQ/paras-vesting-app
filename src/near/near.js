@@ -105,6 +105,10 @@ export function contractGetReleasableAmount() {
   return window.vestingContract.releasable_amount()
 }
 
+export function contractGetRecepient() {
+  return window.vestingContract.recipient()
+}
+
 export async function contractVestingTime() {
   const cliff = parseInt(await window.vestingContract.cliff()) / 10 ** 6
   const start = parseInt(await window.vestingContract.start()) / 10 ** 6
