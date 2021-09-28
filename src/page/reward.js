@@ -1,16 +1,25 @@
+import { formatNearAmount, parseNearAmount } from 'near-api-js/lib/utils/format'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBalance, fetchReward } from '../app/userSlice'
-import { contractClaimVested } from '../near/near'
+import { contractClaimVested, contractVestingBalance } from '../near/near'
+import { prettyBalance } from '../utils/common'
 
 const Reward = ({ vestingTime }) => {
   const { userReward } = useSelector((state) => state.user)
   const [isClaiming, setIsClaiming] = useState(false)
+  const [remaining, setRemaining] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchReward())
+    getRemainingBalance()
   }, [dispatch])
+
+  const getRemainingBalance = async () => {
+    const res = await contractVestingBalance()
+    setRemaining(res)
+  }
 
   const onPressClaim = async () => {
     if (isClaiming) {
@@ -52,6 +61,9 @@ const Reward = ({ vestingTime }) => {
         >
           {buttonText()}
         </button>
+        <p className="text-gray-100 mt-4">
+          Remaining: {prettyBalance(remaining, 18, 6)} Ⓟ
+        </p>
         <div className="mt-16 flex justify-evenly">
           <div>
             <p className="text-gray-300">Start</p>

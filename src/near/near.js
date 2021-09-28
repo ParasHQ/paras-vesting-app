@@ -133,6 +133,21 @@ export async function contractClaimVested() {
   })
 }
 
+export async function contractVestingBalance() {
+  const mapFound = contractMap.find((x) => x.accountId === window.accountId)
+  const contractId = mapFound
+    ? mapFound.contractId
+    : `dev-1632741891435-4285231`
+
+  return await window.account.viewFunction(
+    process.env.REACT_APP_TOKEN_CONTRACT_ID,
+    'ft_balance_of',
+    {
+      account_id: contractId,
+    }
+  )
+}
+
 export function contractStorageDeposit() {
   return window.tokenContract.storage_deposit(
     { account_id: window.accountId },
