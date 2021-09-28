@@ -1,62 +1,63 @@
-const CONTRACT_NAME = process.env.REACT_APP_CONTRACT_TOKEN
+const CONTRACT_NAME = process.env.REACT_APP_TOKEN_CONTRACT_ID
 
 function getConfigToken(env) {
   switch (env) {
-    case "mainnet":
+    case 'mainnet':
+    case 'production':
       return {
-        networkId: "mainnet",
-        nodeUrl: "https://rpc.mainnet.near.org",
+        networkId: 'mainnet',
+        nodeUrl: 'https://rpc.mainnet.near.org',
         contractName: CONTRACT_NAME,
-        walletUrl: "https://wallet.mainnet.near.org",
-        helperUrl: "https://helper.mainnet.near.org",
+        walletUrl: 'https://wallet.mainnet.near.org',
+        helperUrl: 'https://helper.mainnet.near.org',
       }
-    case "development":
-    case "testnet":
+    case 'development':
+    case 'testnet':
       return {
-        networkId: "default",
-        nodeUrl: "https://rpc.testnet.near.org",
+        networkId: 'default',
+        nodeUrl: 'https://rpc.testnet.near.org',
         contractName: CONTRACT_NAME,
-        walletUrl: "https://wallet.testnet.near.org",
-        helperUrl: "https://helper.testnet.near.org",
+        walletUrl: 'https://wallet.testnet.near.org',
+        helperUrl: 'https://helper.testnet.near.org',
       }
-    case "devnet":
+    case 'devnet':
       return {
-        networkId: "devnet",
-        nodeUrl: "https://rpc.devnet.near.org",
+        networkId: 'devnet',
+        nodeUrl: 'https://rpc.devnet.near.org',
         contractName: CONTRACT_NAME,
-        walletUrl: "https://wallet.devnet.near.org",
-        helperUrl: "https://helper.devnet.near.org",
+        walletUrl: 'https://wallet.devnet.near.org',
+        helperUrl: 'https://helper.devnet.near.org',
       }
-    case "betanet":
+    case 'betanet':
       return {
-        networkId: "betanet",
-        nodeUrl: "https://rpc.betanet.near.org",
+        networkId: 'betanet',
+        nodeUrl: 'https://rpc.betanet.near.org',
         contractName: CONTRACT_NAME,
-        walletUrl: "https://wallet.betanet.near.org",
-        helperUrl: "https://helper.betanet.near.org",
+        walletUrl: 'https://wallet.betanet.near.org',
+        helperUrl: 'https://helper.betanet.near.org',
       }
-    case "local":
+    case 'local':
       return {
-        networkId: "local",
-        nodeUrl: "http://localhost:3030",
+        networkId: 'local',
+        nodeUrl: 'http://localhost:3030',
         keyPath: `${process.env.HOME}/.near/validator_key.json`,
-        walletUrl: "http://localhost:4000/wallet",
+        walletUrl: 'http://localhost:4000/wallet',
         contractName: CONTRACT_NAME,
       }
-    case "test":
-    case "ci":
+    case 'test':
+    case 'ci':
       return {
-        networkId: "shared-test",
-        nodeUrl: "https://rpc.ci-testnet.near.org",
+        networkId: 'shared-test',
+        nodeUrl: 'https://rpc.ci-testnet.near.org',
         contractName: CONTRACT_NAME,
-        masterAccount: "test.near",
+        masterAccount: 'test.near',
       }
-    case "ci-betanet":
+    case 'ci-betanet':
       return {
-        networkId: "shared-test-staging",
-        nodeUrl: "https://rpc.ci-betanet.near.org",
+        networkId: 'shared-test-staging',
+        nodeUrl: 'https://rpc.ci-betanet.near.org',
         contractName: CONTRACT_NAME,
-        masterAccount: "test.near",
+        masterAccount: 'test.near',
       }
     default:
       throw Error(

@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom"
-import { useDispatch } from "react-redux"
+} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
-import Balance from "./page/balance"
-import Reward from "./page/reward"
-import Login from "./page/login"
-import Nav from "./component/Nav"
-import Footer from "./component/Footer"
-import DepositModal from "./component/DepositModal"
-import NotRecipientModal from "./component/NotRecipientModal"
+import Balance from './page/balance'
+import Reward from './page/reward'
+import Login from './page/login'
+import Nav from './component/Nav'
+import DepositModal from './component/DepositModal'
+import NotRecipientModal from './component/NotRecipientModal'
 import {
   getAccountId,
   isLoggedIn,
@@ -22,8 +21,8 @@ import {
   logout,
   contractVestingTime,
   contractGetRecepient,
-} from "./near/near"
-import { fetchBalance, fetchReward, setUser } from "./app/userSlice"
+} from './near/near'
+import { fetchBalance, fetchReward, setUser } from './app/userSlice'
 
 const App = () => {
   const [deposited, setDeposited] = useState(true)
@@ -57,36 +56,37 @@ const App = () => {
 
   return (
     <Router>
-      {isLoggedIn() && !deposited && (
-        <DepositModal
-          onClickDeposit={contractStorageDeposit}
-          onClickLogout={logout}
-        />
-      )}
-      <Nav isLoggedIn={isLoggedIn()} />
-      <Switch>
-        {isLoggedIn() ? (
-          <>
-            <Route exact path="/balance">
-              <Balance />
-            </Route>
-            <Route exact path="/reward">
-              <Reward vestingTime={vestingTime} />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/balance" />
-            </Route>
-          </>
-        ) : (
-          <>
-            <Route exact path="/">
-              <Login />
-            </Route>
-            <Redirect to="/" />
-          </>
+      <div className="min-h-screen">
+        {isLoggedIn() && !deposited && (
+          <DepositModal
+            onClickDeposit={contractStorageDeposit}
+            onClickLogout={logout}
+          />
         )}
-      </Switch>
-      <Footer />
+        <Switch>
+          {isLoggedIn() ? (
+            <>
+              <Nav isLoggedIn={isLoggedIn()} />
+              <Route exact path="/balance">
+                <Balance />
+              </Route>
+              <Route exact path="/reward">
+                <Reward vestingTime={vestingTime} />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/balance" />
+              </Route>
+            </>
+          ) : (
+            <>
+              <Route exact path="/">
+                <Login />
+              </Route>
+              <Redirect to="/" />
+            </>
+          )}
+        </Switch>
+      </div>
     </Router>
   )
 }

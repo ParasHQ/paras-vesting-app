@@ -1,12 +1,9 @@
-import { connect, Contract, keyStores, WalletConnection } from "near-api-js"
-import { parseNearAmount } from "near-api-js/lib/utils/format"
-import getConfigVesting from "./configVesting"
-import getConfigToken from "./configToken"
+import { connect, Contract, keyStores, WalletConnection } from 'near-api-js'
+import { parseNearAmount } from 'near-api-js/lib/utils/format'
+import getConfigToken from './configToken'
+import contractMap from '../constant/contractMap'
 
-const nearConfigToken = getConfigToken(process.env.NODE_ENV || "development")
-const nearConfigVesting = getConfigVesting(
-  process.env.NODE_ENV || "development"
-)
+const nearConfigToken = getConfigToken(process.env.NODE_ENV || 'development')
 
 export async function initContract() {
   const near = await connect(
@@ -23,36 +20,37 @@ export async function initContract() {
 
   window.tokenContract = new Contract(
     window.account,
-    nearConfigToken.contractName,
+    process.env.REACT_APP_TOKEN_CONTRACT_ID,
     {
       viewMethods: [
-        "ft_balance_of",
-        "ft_metadata",
-        "ft_total_supply",
-        "storage_balance_of",
+        'ft_balance_of',
+        'ft_metadata',
+        'ft_total_supply',
+        'storage_balance_of',
       ],
-      changeMethods: ["storage_deposit", "ft_transfer", "ft_transfer_call"],
+      changeMethods: ['storage_deposit', 'ft_transfer', 'ft_transfer_call'],
     }
   )
 
-  window.vestingContract = new Contract(
-    window.account,
-    nearConfigVesting.contractName,
-    {
-      viewMethods: [
-        "recipient",
-        "amount",
-        "amount_claimed",
-        "cliff",
-        "start",
-        "duration",
-        "revocable",
-        "releasable_amount",
-        "calculate_amount_vested",
-      ],
-      changeMethods: ["claim_vested"],
-    }
-  )
+  const mapFound = contractMap.find((x) => x.accountId === window.accountId)
+  const contractId = mapFound
+    ? mapFound.contractId
+    : `dev-1632741891435-4285231`
+
+  window.vestingContract = new Contract(window.account, contractId, {
+    viewMethods: [
+      'recipient',
+      'amount',
+      'amount_claimed',
+      'cliff',
+      'start',
+      'duration',
+      'revocable',
+      'releasable_amount',
+      'calculate_amount_vested',
+    ],
+    changeMethods: ['claim_vested'],
+  })
 }
 
 export function logout() {
@@ -62,8 +60,8 @@ export function logout() {
 
 export function login() {
   window.walletConnection.requestSignIn(
-    nearConfigVesting.contractName,
-    "Vesting Paras"
+    process.env.REACT_APP_TOKEN_CONTRACT_ID,
+    'Vesting Paras'
   )
 }
 
@@ -120,14 +118,25 @@ export async function contractVestingTime() {
   }
 }
 
-export function contractClaimVested() {
-  return window.vestingContract.claim_vested()
+export async function contractClaimVested() {
+  const mapFound = contractMap.find((x) => x.accountId === window.accountId)
+  const contractId = mapFound
+    ? mapFound.contractId
+    : `dev-1632741891435-4285231`
+
+  return await window.account.functionCall({
+    contractId: contractId,
+    methodName: 'claim_vested',
+    args: {},
+    gas: '300000000000000',
+    attachedDeposit: '1',
+  })
 }
 
 export function contractStorageDeposit() {
   return window.tokenContract.storage_deposit(
     { account_id: window.accountId },
-    "100000000000000",
-    parseNearAmount("0.0125")
+    '100000000000000',
+    parseNearAmount('0.0125')
   )
 }

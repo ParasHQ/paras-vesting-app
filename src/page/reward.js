@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchBalance, fetchReward } from "../app/userSlice"
-import { contractClaimVested } from "../near/near"
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchBalance, fetchReward } from '../app/userSlice'
+import { contractClaimVested } from '../near/near'
 
 const Reward = ({ vestingTime }) => {
   const { userReward } = useSelector((state) => state.user)
@@ -29,12 +29,12 @@ const Reward = ({ vestingTime }) => {
 
   const buttonText = () => {
     if (isClaiming) {
-      return "Processing..."
+      return 'Processing...'
     }
-    if (userReward === "0") {
-      return "Reward Claimed"
+    if (userReward === '0') {
+      return 'Reward Claimed'
     }
-    return "Claim Reward"
+    return 'Claim Reward'
   }
 
   return (
@@ -46,7 +46,7 @@ const Reward = ({ vestingTime }) => {
         <p className="text-gray-100 font-bold text-4xl">{userReward} Ⓟ</p>
         <button
           type="button"
-          disabled={userReward === "0"}
+          disabled={userReward === '0'}
           onClick={onPressClaim}
           className="outline-none mt-6 w-48 rounded-md bg-primary font-semibold border-2 p-2 text-gray-100 border-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -56,19 +56,19 @@ const Reward = ({ vestingTime }) => {
           <div>
             <p className="text-gray-300">Start</p>
             <p className="font-bold text-gray-200">
-              {vestingTime.start?.toLocaleDateString("en-US")}
+              {vestingTime.start?.toLocaleDateString('en-US')}
             </p>
           </div>
           <div>
             <p className="text-gray-300">Cliff</p>
             <p className="font-bold text-gray-200">
-              {vestingTime.cliff?.toLocaleDateString("en-US")}
+              {vestingTime.cliff?.toLocaleDateString('en-US')}
             </p>
           </div>
           <div>
             <p className="text-gray-300">End</p>
             <p className="font-bold text-gray-200">
-              {vestingTime.duration?.toLocaleDateString("en-US")}
+              {vestingTime.duration?.toLocaleDateString('en-US')}
             </p>
           </div>
         </div>

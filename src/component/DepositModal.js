@@ -1,11 +1,12 @@
-import Modal from "./Modal"
+import Modal from './Modal'
 
 const DepositModal = ({ onClickDeposit, onClickLogout }) => {
   return (
     <Modal>
-      <div className="bg-white w-full p-4 rounded-md mx-4 md:m-auto max-w-md">
+      <div className="bg-white w-full p-4 rounded-md mx-4 md:m-auto max-w-sm">
         <p>
-          In order to claim reward you need to deposit 0.0125 NEAR for storage
+          In order to claim reward you need to deposit <b>0.0125 NEAR</b> for
+          storage
         </p>
         <div className="flex justify-between items-center">
           <button
@@ -18,7 +19,7 @@ const DepositModal = ({ onClickDeposit, onClickLogout }) => {
           <button
             type="button"
             onClick={onClickLogout}
-            className="mt-4 border-b-2 border-black"
+            className="mt-4 font-semibold"
           >
             Logout
           </button>

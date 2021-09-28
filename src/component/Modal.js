@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef } from 'react'
 
 const Modal = ({
   close = () => {},
@@ -11,17 +11,17 @@ const Modal = ({
 
   useEffect(() => {
     const onKeydown = (e) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         close()
       }
     }
 
     if (closeOnEscape) {
-      document.addEventListener("keydown", onKeydown)
+      document.addEventListener('keydown', onKeydown)
     }
 
     return () => {
-      document.removeEventListener("keydown", onKeydown)
+      document.removeEventListener('keydown', onKeydown)
     }
   }, [close, closeOnEscape])
 

@@ -1,12 +1,12 @@
-import { prettyBalance } from "../utils/common"
+import { prettyBalance } from '../utils/common'
 
 const Activity = ({ amount, memo }) => (
   <div className="my-4 break-all">
     <p className="text-gray-300">
-      Received{" "}
+      Received{' '}
       <span className="text-gray-100 font-semibold">
-        {prettyBalance(amount, 24, 4)} Ⓟ
-      </span>{" "}
+        {prettyBalance(amount, 18, 4)} Ⓟ
+      </span>{' '}
       from <span className="text-gray-100 font-semibold">Paras</span>
     </p>
     <p className="text-gray-400 text-sm">{memo}</p>
