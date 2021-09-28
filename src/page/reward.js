@@ -1,4 +1,3 @@
-import { formatNearAmount, parseNearAmount } from 'near-api-js/lib/utils/format'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBalance, fetchReward } from '../app/userSlice'
