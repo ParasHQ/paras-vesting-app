@@ -128,7 +128,7 @@ export async function contractClaimVested() {
     contractId: contractId,
     methodName: 'claim_vested',
     args: {},
-    gas: '300000000000000',
+    gas: '100000000000000',
     attachedDeposit: '1',
   })
 }
