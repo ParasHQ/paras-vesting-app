@@ -8,7 +8,7 @@ const contractMap = [
     contractId: `dcp.paras-vesting.near`,
   },
   {
-    accountId: 'neareco.near',
+    accountId: 'myneareco.near',
     contractId: `moonwhale.paras-vesting.near`,
   },
   {
