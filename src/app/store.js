@@ -6,7 +6,7 @@ export default configureStore({
   reducer: {
     user: userReducer,
   },
-  ...(import.meta.env.NODE_ENV === 'development' && {
+  ...(import.meta.env.VITE_NODE_ENV === 'development' && {
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   }),
 })

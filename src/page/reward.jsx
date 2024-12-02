@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBalance, fetchReward } from '../app/userSlice'
-import { contractClaimVested, contractVestingBalance } from '../near/near'
+import { contractVestingBalance } from '../near/near'
 import { prettyBalance } from '../utils/common'
+import { useWalletSelector } from '../contexts/WalletSelectorProvider'
+import contractMap from '../constant/contractMap'
 
 const Reward = ({ vestingTime }) => {
+  const { selector, accountId } = useWalletSelector()
   const { userReward } = useSelector((state) => state.user)
   const [isClaiming, setIsClaiming] = useState(false)
   const [remaining, setRemaining] = useState(null)
@@ -26,7 +29,27 @@ const Reward = ({ vestingTime }) => {
     }
     setIsClaiming(true)
     try {
-      await contractClaimVested()
+      const wallet = await selector.wallet()
+
+      const mapFound = contractMap.find((x) => x.accountId === accountId)
+      const contractId = mapFound
+        ? mapFound.contractId
+        : `dev-1632741891435-4285231`
+
+      await wallet.signAndSendTransaction({
+        receiverId: contractId,
+        actions: [
+          {
+            type: 'FunctionCall',
+            params: {
+              methodName: 'claim_vested',
+              args: {},
+              gas: '100000000000000',
+              deposit: '1',
+            },
+          },
+        ],
+      })
       dispatch(fetchBalance())
     } catch (error) {
       // eslint-disable-next-line no-console

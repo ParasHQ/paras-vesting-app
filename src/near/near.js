@@ -4,7 +4,7 @@ import getConfigToken from './configToken'
 import contractMap from '../constant/contractMap'
 
 const nearConfigToken = getConfigToken(
-  import.meta.env.NODE_ENV || 'development'
+  import.meta.env.VITE_NODE_ENV || 'development'
 )
 
 export async function initContract() {
