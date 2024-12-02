@@ -3,7 +3,9 @@ import { parseNearAmount } from 'near-api-js/lib/utils/format'
 import getConfigToken from './configToken'
 import contractMap from '../constant/contractMap'
 
-const nearConfigToken = getConfigToken(process.env.NODE_ENV || 'development')
+const nearConfigToken = getConfigToken(
+  import.meta.env.VITE_NODE_ENV || 'development'
+)
 
 export async function initContract() {
   const near = await connect(
@@ -14,13 +16,13 @@ export async function initContract() {
     )
   )
 
-  window.walletConnection = new WalletConnection(near)
+  window.walletConnection = new WalletConnection(near, 'paras-vesting')
   window.accountId = window.walletConnection.getAccountId()
   window.account = window.walletConnection.account()
 
   window.tokenContract = new Contract(
     window.account,
-    process.env.REACT_APP_TOKEN_CONTRACT_ID,
+    import.meta.env.VITE_TOKEN_CONTRACT_ID,
     {
       viewMethods: [
         'ft_balance_of',
@@ -60,7 +62,7 @@ export function logout() {
 
 export function login() {
   window.walletConnection.requestSignIn(
-    process.env.REACT_APP_TOKEN_CONTRACT_ID,
+    import.meta.env.VITE_TOKEN_CONTRACT_ID,
     'Vesting Paras'
   )
 }
@@ -140,7 +142,7 @@ export async function contractVestingBalance() {
     : `dev-1632741891435-4285231`
 
   return await window.account.viewFunction(
-    process.env.REACT_APP_TOKEN_CONTRACT_ID,
+    import.meta.env.VITE_TOKEN_CONTRACT_ID,
     'ft_balance_of',
     {
       account_id: contractId,

@@ -7,28 +7,28 @@ import {
 } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import Balance from './page/balance'
-import Reward from './page/reward'
-import Login from './page/login'
-import Nav from './component/Nav'
-import DepositModal from './component/DepositModal'
-import NotRecipientModal from './component/NotRecipientModal'
+import Balance from './page/balance.jsx'
+import Reward from './page/reward.jsx'
+import Login from './page/login.jsx'
+import Nav from './component/Nav.jsx'
+import DepositModal from './component/DepositModal.jsx'
+import NotRecipientModal from './component/NotRecipientModal.jsx'
 import {
   getAccountId,
-  isLoggedIn,
   contractGetStorageBalance,
   contractStorageDeposit,
-  logout,
   contractVestingTime,
   contractGetRecepient,
 } from './near/near'
 import { fetchBalance, fetchReward, setUser } from './app/userSlice'
+import { useWalletSelector } from './contexts/WalletSelectorProvider.jsx'
 
 const App = () => {
   const [deposited, setDeposited] = useState(true)
   const [vestingTime, setVestingTime] = useState({})
   const [isRecipient, setIsRecipient] = useState(true)
   const dispatch = useDispatch()
+  const { accountId, signOut } = useWalletSelector()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,30 +43,30 @@ const App = () => {
       setIsRecipient(isAccRecipient)
     }
 
-    if (isLoggedIn()) {
+    if (accountId) {
       fetchUser()
     } else {
       dispatch(setUser(null))
     }
   }, [dispatch])
 
-  if (isLoggedIn() && !isRecipient) {
-    return <NotRecipientModal onClickLogout={logout} />
+  if (accountId && !isRecipient) {
+    return <NotRecipientModal onClickLogout={signOut} />
   }
 
   return (
     <Router>
       <div className="min-h-screen">
-        {isLoggedIn() && !deposited && (
+        {accountId && !deposited && (
           <DepositModal
             onClickDeposit={contractStorageDeposit}
-            onClickLogout={logout}
+            onClickLogout={signOut}
           />
         )}
         <Switch>
-          {isLoggedIn() ? (
+          {accountId ? (
             <>
-              <Nav isLoggedIn={isLoggedIn()} />
+              <Nav isLoggedIn={accountId} />
               <Route exact path="/balance">
                 <Balance />
               </Route>

@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { setUser } from '../app/userSlice'
-import { logout } from '../near/near'
+import { useWalletSelector } from '../contexts/WalletSelectorProvider'
 
 const Nav = ({ isLoggedIn }) => {
   const [showAccountModal, setShowAccountModal] = useState(false)
   const { userId, userBalance, userReward } = useSelector((state) => state.user)
   const modalAccount = useRef()
-  const dispatch = useDispatch()
+  const { signOut } = useWalletSelector()
 
   useEffect(() => {
     const onClickEv = (e) => {
@@ -28,11 +27,6 @@ const Nav = ({ isLoggedIn }) => {
 
   const toggleModal = () => {
     setShowAccountModal(!showAccountModal)
-  }
-
-  const onPressLogOut = () => {
-    logout()
-    dispatch(setUser(null))
   }
 
   return (
@@ -126,7 +120,7 @@ const Nav = ({ isLoggedIn }) => {
                       </div>
                     </Link>
                   </div>
-                  <div onClick={onPressLogOut}>
+                  <div onClick={signOut}>
                     <p className="text-gray-100 py-2 pt-4 md:p-2 border-t-2 border-gray-400 md:border-none -mx-2 px-2 text-sm cursor-pointer">
                       Logout
                     </p>

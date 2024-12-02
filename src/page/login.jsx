@@ -1,14 +1,16 @@
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { isLoggedIn, login } from '../near/near'
+import { useWalletSelector } from '../contexts/WalletSelectorProvider'
 
 const Login = () => {
   const history = useHistory()
+  const { accountId, signIn } = useWalletSelector()
 
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (accountId) {
       history.push('/balance')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history])
 
   return (
@@ -51,7 +53,7 @@ const Login = () => {
 
           <button
             type="button"
-            onClick={login}
+            onClick={signIn}
             className="outline-none w-60 mt-4 rounded-md bg-primary font-semibold border-2 p-2 text-white border-primary"
           >
             Login with NEAR
