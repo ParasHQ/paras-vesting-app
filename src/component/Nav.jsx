@@ -5,7 +5,8 @@ import { useWalletSelector } from '../contexts/WalletSelectorProvider'
 
 const Nav = ({ isLoggedIn }) => {
   const [showAccountModal, setShowAccountModal] = useState(false)
-  const { userId, userBalance, userReward } = useSelector((state) => state.user)
+  const { accountId } = useWalletSelector()
+  const { userBalance, userReward } = useSelector((state) => state.user)
   const modalAccount = useRef()
   const { signOut } = useWalletSelector()
 
@@ -85,7 +86,7 @@ const Nav = ({ isLoggedIn }) => {
               onClick={toggleModal}
               className="flex items-baseline md:ml-4 bg-dark-primary-1 justify-end px-3 py-2 rounded-md cursor-pointer"
             >
-              <p className="text-gray-100 font-bold pr-2">{userId}</p>
+              <p className="text-gray-100 font-bold pr-2">{accountId}</p>
               <svg
                 width="12"
                 height="12"

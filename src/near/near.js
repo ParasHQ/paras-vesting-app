@@ -16,7 +16,7 @@ export async function initContract() {
     )
   )
 
-  window.walletConnection = new WalletConnection(near, 'paras-vesting')
+  window.walletConnection = new WalletConnection(near, 'near_app')
   window.accountId = window.walletConnection.getAccountId()
   window.account = window.walletConnection.account()
 
@@ -136,18 +136,20 @@ export async function contractClaimVested() {
 }
 
 export async function contractVestingBalance() {
+  console.log(window.accountId)
   const mapFound = contractMap.find((x) => x.accountId === window.accountId)
   const contractId = mapFound
     ? mapFound.contractId
     : `dev-1632741891435-4285231`
 
-  return await window.account.viewFunction(
-    import.meta.env.VITE_TOKEN_CONTRACT_ID,
-    'ft_balance_of',
-    {
+  console.log(import.meta.env.VITE_TOKEN_CONTRACT_ID, contractId)
+  return await window.account.viewFunction({
+    contractId: import.meta.env.VITE_TOKEN_CONTRACT_ID,
+    methodName: 'ft_balance_of',
+    args: {
       account_id: contractId,
-    }
-  )
+    },
+  })
 }
 
 export function contractStorageDeposit() {

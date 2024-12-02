@@ -20,6 +20,7 @@ const Reward = ({ vestingTime }) => {
 
   const getRemainingBalance = async () => {
     const res = await contractVestingBalance()
+    console.log(res)
     setRemaining(res)
   }
 
