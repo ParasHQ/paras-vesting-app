@@ -5,14 +5,17 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { initContract } from './near/near'
 import store from './app/store'
-
 import './index.css'
+import WalletSelectorProvider from './contexts/WalletSelectorProvider.js'
+import '@near-wallet-selector/modal-ui/styles.css'
 
 window.nearInitPromise = initContract().then(() => {
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
-        <App />
+        <WalletSelectorProvider>
+          <App />
+        </WalletSelectorProvider>
       </Provider>
     </React.StrictMode>,
     document.getElementById('root')

@@ -1,0 +1,2 @@
+export const REACT_APP_TOKEN_CONTRACT_ID =
+  process.env.REACT_APP_TOKEN_CONTRACT_ID
