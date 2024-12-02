@@ -1,4 +1,4 @@
-const CONTRACT_NAME = process.env.REACT_APP_TOKEN_CONTRACT_ID
+const CONTRACT_NAME = import.meta.env.VITE_TOKEN_CONTRACT_ID
 
 function getConfigToken(env) {
   switch (env) {
@@ -40,7 +40,7 @@ function getConfigToken(env) {
       return {
         networkId: 'local',
         nodeUrl: 'http://localhost:3030',
-        keyPath: `${process.env.HOME}/.near/validator_key.json`,
+        keyPath: `${import.meta.env.HOME}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
         contractName: CONTRACT_NAME,
       }
@@ -66,4 +66,4 @@ function getConfigToken(env) {
   }
 }
 
-module.exports = getConfigToken
+export default getConfigToken

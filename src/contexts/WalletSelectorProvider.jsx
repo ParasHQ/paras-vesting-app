@@ -7,7 +7,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { REACT_APP_TOKEN_CONTRACT_ID } from '../constant/contract'
 import { setupModal } from '@near-wallet-selector/modal-ui'
 import { distinctUntilChanged, map } from 'rxjs'
 
@@ -20,13 +19,19 @@ const WalletSelectorProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   const init = useCallback(async () => {
+    console.log(import.meta.env.VITE_TOKEN_CONTRACT_ID)
     const _selector = await setupWalletSelector({
       network: 'mainnet',
       debug: true,
       modules: [setupMyNearWallet()],
+      opts: {
+        network: {
+          nodeUrls: ['https://rpc.mainnet.near.org'],
+        },
+      },
     })
     const _modal = setupModal(_selector, {
-      contractId: REACT_APP_TOKEN_CONTRACT_ID,
+      contractId: import.meta.env.VITE_TOKEN_CONTRACT_ID,
     })
     const state = _selector.store.getState()
     setAccounts(state.accounts)
@@ -38,7 +43,6 @@ const WalletSelectorProvider = ({ children }) => {
   useEffect(() => {
     init().catch((err) => {
       console.error(err)
-      alert('Failed to initialise wallet selector')
     })
   }, [init])
 
@@ -72,7 +76,7 @@ const WalletSelectorProvider = ({ children }) => {
     accounts.find((account) => account.active)?.accountId || null
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div className="text-white">Loading...</div>
   }
 
   return (

@@ -1,12 +1,13 @@
+import './init'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './App'
-import reportWebVitals from './reportWebVitals'
-import { initContract } from './near/near'
-import store from './app/store'
+import App from './App.jsx'
+import reportWebVitals from './reportWebVitals.js'
+import { initContract } from './near/near.js'
+import store from './app/store.js'
 import './index.css'
-import WalletSelectorProvider from './contexts/WalletSelectorProvider.js'
+import WalletSelectorProvider from './contexts/WalletSelectorProvider.jsx'
 import '@near-wallet-selector/modal-ui/styles.css'
 
 window.nearInitPromise = initContract().then(() => {

@@ -7,12 +7,12 @@ import {
 } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import Balance from './page/balance'
-import Reward from './page/reward'
-import Login from './page/login'
-import Nav from './component/Nav'
-import DepositModal from './component/DepositModal'
-import NotRecipientModal from './component/NotRecipientModal'
+import Balance from './page/balance.jsx'
+import Reward from './page/reward.jsx'
+import Login from './page/login.jsx'
+import Nav from './component/Nav.jsx'
+import DepositModal from './component/DepositModal.jsx'
+import NotRecipientModal from './component/NotRecipientModal.jsx'
 import {
   getAccountId,
   isLoggedIn,
