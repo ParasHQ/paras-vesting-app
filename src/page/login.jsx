@@ -4,7 +4,7 @@ import { useWalletSelector } from '../contexts/WalletSelectorProvider'
 
 const Login = () => {
   const history = useHistory()
-  const { modal, accountId } = useWalletSelector()
+  const { accountId, signIn } = useWalletSelector()
 
   useEffect(() => {
     if (accountId) {
@@ -53,9 +53,7 @@ const Login = () => {
 
           <button
             type="button"
-            onClick={async () => {
-              modal?.show()
-            }}
+            onClick={signIn}
             className="outline-none w-60 mt-4 rounded-md bg-primary font-semibold border-2 p-2 text-white border-primary"
           >
             Login with NEAR

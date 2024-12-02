@@ -85,13 +85,22 @@ const WalletSelectorProvider = ({ children }) => {
   const accountId =
     accounts.find((account) => account.active)?.accountId || null
 
+  const signIn = async () => {
+    modal?.show()
+  }
+
+  const signOut = async () => {
+    const wallet = await selector.wallet()
+    await wallet.signOut()
+  }
+
   if (loading) {
     return <div className="text-white">Loading...</div>
   }
 
   return (
     <WalletSelectorContext.Provider
-      value={{ selector, modal, accounts, accountId }}
+      value={{ selector, modal, accounts, accountId, signIn, signOut }}
     >
       {children}
     </WalletSelectorContext.Provider>

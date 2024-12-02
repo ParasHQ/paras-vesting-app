@@ -7,7 +7,7 @@ const Nav = ({ isLoggedIn }) => {
   const [showAccountModal, setShowAccountModal] = useState(false)
   const { userId, userBalance, userReward } = useSelector((state) => state.user)
   const modalAccount = useRef()
-  const { selector } = useWalletSelector()
+  const { signOut } = useWalletSelector()
 
   useEffect(() => {
     const onClickEv = (e) => {
@@ -120,12 +120,7 @@ const Nav = ({ isLoggedIn }) => {
                       </div>
                     </Link>
                   </div>
-                  <div
-                    onClick={async () => {
-                      const wallet = await selector.wallet()
-                      await wallet.signOut()
-                    }}
-                  >
+                  <div onClick={signOut}>
                     <p className="text-gray-100 py-2 pt-4 md:p-2 border-t-2 border-gray-400 md:border-none -mx-2 px-2 text-sm cursor-pointer">
                       Logout
                     </p>

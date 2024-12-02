@@ -28,7 +28,7 @@ const App = () => {
   const [vestingTime, setVestingTime] = useState({})
   const [isRecipient, setIsRecipient] = useState(true)
   const dispatch = useDispatch()
-  const { accountId, selector } = useWalletSelector()
+  const { accountId, signOut } = useWalletSelector()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,14 +51,7 @@ const App = () => {
   }, [dispatch])
 
   if (accountId && !isRecipient) {
-    return (
-      <NotRecipientModal
-        onClickLogout={async () => {
-          const wallet = await selector.wallet()
-          await wallet.signOut()
-        }}
-      />
-    )
+    return <NotRecipientModal onClickLogout={signOut} />
   }
 
   return (
@@ -67,10 +60,7 @@ const App = () => {
         {accountId && !deposited && (
           <DepositModal
             onClickDeposit={contractStorageDeposit}
-            onClickLogout={async () => {
-              const wallet = await selector.wallet()
-              await wallet.signOut()
-            }}
+            onClickLogout={signOut}
           />
         )}
         <Switch>
