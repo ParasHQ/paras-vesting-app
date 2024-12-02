@@ -15,20 +15,20 @@ import DepositModal from './component/DepositModal.jsx'
 import NotRecipientModal from './component/NotRecipientModal.jsx'
 import {
   getAccountId,
-  isLoggedIn,
   contractGetStorageBalance,
   contractStorageDeposit,
-  logout,
   contractVestingTime,
   contractGetRecepient,
 } from './near/near'
 import { fetchBalance, fetchReward, setUser } from './app/userSlice'
+import { useWalletSelector } from './contexts/WalletSelectorProvider.jsx'
 
 const App = () => {
   const [deposited, setDeposited] = useState(true)
   const [vestingTime, setVestingTime] = useState({})
   const [isRecipient, setIsRecipient] = useState(true)
   const dispatch = useDispatch()
+  const { accountId, selector } = useWalletSelector()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,30 +43,40 @@ const App = () => {
       setIsRecipient(isAccRecipient)
     }
 
-    if (isLoggedIn()) {
+    if (accountId) {
       fetchUser()
     } else {
       dispatch(setUser(null))
     }
   }, [dispatch])
 
-  if (isLoggedIn() && !isRecipient) {
-    return <NotRecipientModal onClickLogout={logout} />
+  if (accountId && !isRecipient) {
+    return (
+      <NotRecipientModal
+        onClickLogout={async () => {
+          const wallet = await selector.wallet()
+          await wallet.signOut()
+        }}
+      />
+    )
   }
 
   return (
     <Router>
       <div className="min-h-screen">
-        {isLoggedIn() && !deposited && (
+        {accountId && !deposited && (
           <DepositModal
             onClickDeposit={contractStorageDeposit}
-            onClickLogout={logout}
+            onClickLogout={async () => {
+              const wallet = await selector.wallet()
+              await wallet.signOut()
+            }}
           />
         )}
         <Switch>
-          {isLoggedIn() ? (
+          {accountId ? (
             <>
-              <Nav isLoggedIn={isLoggedIn()} />
+              <Nav isLoggedIn={accountId} />
               <Route exact path="/balance">
                 <Balance />
               </Route>
