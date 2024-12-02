@@ -1,6 +1,6 @@
 import './init'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import App from './App.jsx'
 import reportWebVitals from './reportWebVitals.js'
@@ -11,15 +11,16 @@ import WalletSelectorProvider from './contexts/WalletSelectorProvider.jsx'
 import '@near-wallet-selector/modal-ui/styles.css'
 
 window.nearInitPromise = initContract().then(() => {
-  ReactDOM.render(
+  const root = ReactDOM.createRoot(document.getElementById('root'))
+
+  root.render(
     <React.StrictMode>
       <Provider store={store}>
         <WalletSelectorProvider>
           <App />
         </WalletSelectorProvider>
       </Provider>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
   )
 })
 
